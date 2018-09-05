@@ -51,7 +51,7 @@ class KinectRecorder:
     self.body = np.zeros([self.depth_height, self.depth_width])
     self.color = np.zeros([self.color_height, self.color_width, 3])
     self.depth = np.zeros([self.depth_height, self.depth_width])
-    self.color_cap = None
+    self.color_out = None
     self.color_frames = []
     self.depth_frames = []
     self.body_frames = []
@@ -119,7 +119,7 @@ class KinectRecorder:
             self.recording = True
             pygame.display.set_caption('Kinect Human Recorder - Recording')
             if self.save_on_record:
-              self.color_cap = cv2.VideoWriter(
+              self.color_out = cv2.VideoWriter(
                 self.save_prefix + '_color.avi',
                 cv2.VideoWriter_fourcc(*'DIVX'),
                 self.fps,
@@ -148,8 +148,8 @@ class KinectRecorder:
       if self.recording:
         self.depth_frames.append(self.depth)
         self.body_frames.append(self.body)
-        if self.color_cap is not None:
-          self.color_cap.write(self.color)
+        if self.color_out is not None:
+          self.color_out.write(self.color)
         else:
           self.color_frames.append(self.color)
 
@@ -182,17 +182,17 @@ class KinectRecorder:
 
     pygame.quit()
 
-    if self.color_cap is None:
-      self.color_cap = cv2.VideoWriter(
+    if self.color_out is None:
+      self.color_out = cv2.VideoWriter(
         self.save_prefix + '_color.avi',
         cv2.VideoWriter_fourcc(*'DIVX'),
         self.fps,
         (self.color_width, self.color_height)
       )
       for frame in self.color_frames:
-        self.color_cap.write(frame)
+        self.color_out.write(frame)
 
-    self.color_cap.release()
+    self.color_out.release()
 
     pickle_save(self.save_prefix + '_depth.pkl', self.depth_frames)
     pickle_save(self.save_prefix + '_body.pkl', self.body_frames)
@@ -201,6 +201,6 @@ class KinectRecorder:
 
 
 if __name__ == '__main__':
-  save_prefix = input('Please input the path to save recorded data: ')
-  kr = KinectRecorder(save_prefix, False, False)
+  # save_prefix = input('Please input the path to save recorded data: ')
+  kr = KinectRecorder('test', False, False)
   kr.run()
