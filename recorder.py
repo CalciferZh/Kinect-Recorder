@@ -10,6 +10,35 @@ from utils import pickle_save
 
 class KinectRecorder:
   def __init__(self, save_prefix, visualize, save_on_record):
+    """
+    Record color, depth and body index stream from Kinect v2. The performance
+    is bad.
+
+    On my PC:
+    * If you want to display the stream, the application will run at 4 fps.
+    * If you you want to write color stream to video file while recording, it
+    will run at 10 ~ 30 fps.
+    * If you want to write all color frames to video file together after
+    recording, it can run at 30 fps - perfect. However, it will eat 14GB RAM per
+    minute.
+
+    I suggest you first seting everything up under with `visualize=True`, then
+    set `visualize=False` to begin real recording. If you have plenty of RAM,
+    set `save_on_record=False` to obtain stable fps, otherwise set it to
+    `False`.
+
+    Parameters
+    ----------
+    save_prefix: Path to save the recorded files. Color stream will be saved to
+    `save_prefix`_color.avi, depth stream will be saved to
+    `save_prefix`_depth.pkl as a list of ndarrays, body index will be saved to
+    `save_prefix`_body.pkl also as a list of ndarrays.
+
+    visualize: Whether to display the color, depth and body stream.
+
+    save_on_record: Whether to save color stream to video file while recording.
+
+    """
     self.kinect = PyKinectRuntime.PyKinectRuntime(
       PyKinectV2.FrameSourceTypes_Depth |
       PyKinectV2.FrameSourceTypes_Color |
@@ -39,6 +68,15 @@ class KinectRecorder:
     )
     self.hw_ratio = self.surface.get_height() / self.surface.get_width()
 
+    # screen layout: # is color stream, * is depth, & is body index
+    #  ----------------------
+    # |################# *****|
+    # |################# *****|
+    # |################# *****|
+    # |################# &&&&&|
+    # |################# &&&&&|
+    # |################# &&&&&|
+    #  ----------------------
     scale = 0.6
     self.screen = pygame.display.set_mode(
       (
@@ -59,6 +97,11 @@ class KinectRecorder:
     ])
 
   def run(self):
+    """
+    Main loop. Press any key to start recording. Close the window to stop
+    recording.
+
+    """
     while not self.done:
       for event in pygame.event.get():
         if event.type == pygame.QUIT:
