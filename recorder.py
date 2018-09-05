@@ -22,7 +22,7 @@ class KinectRecorder:
     recording, it can run at 30 fps - perfect. However, it will eat 14GB RAM per
     minute.
 
-    I suggest you first seting everything up under with `visualize=True`, then
+    I recommend first setting everything up under with `visualize=True`, then
     set `visualize=False` to begin real recording. If you have plenty of RAM,
     set `save_on_record=False` to obtain stable fps, otherwise set it to
     `False`.
@@ -201,6 +201,5 @@ class KinectRecorder:
 
 
 if __name__ == '__main__':
-  # save_prefix = input('Please input the path to save recorded data: ')
   kr = KinectRecorder('test', False, False)
   kr.run()

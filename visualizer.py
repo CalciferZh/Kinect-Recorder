@@ -131,10 +131,10 @@ class RawVisualizer:
     pygame.quit()
 
 
-class CalibratedVisualizer:
+class AlignedVisualizer:
   def __init__(self, load_path):
     """
-    Visualize stream after calibration.
+    Visualize stream after alignment.
 
     Parameter
     ---------
@@ -241,5 +241,5 @@ class CalibratedVisualizer:
 
 if __name__ == '__main__':
   # v = RawVisualizer('test')
-  v = CalibratedVisualizer('test.pkl')
+  v = AlignedVisualizer('test.pkl')
   v.run()

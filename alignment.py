@@ -125,9 +125,9 @@ def world_to_color(params, pcloud, color):
   return depth_color
 
 
-def calibrate(params, load_prefix, save_path):
+def align(params, load_prefix, save_path):
   """
-  Calibrate depth and color images. Save everything into a single pickle object.
+  Align depth and color images. Save everything into a single pickle object.
 
   Parameters
   ----------
@@ -180,4 +180,4 @@ def calibrate(params, load_prefix, save_path):
 
 
 if __name__ == '__main__':
-  calibrate(default_params, 'test', 'test.pkl')
+  align(default_params, 'test', 'test.pkl')
