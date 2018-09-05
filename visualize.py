@@ -8,6 +8,16 @@ from utils import pickle_save
 
 class RawVisualizer:
   def __init__(self, load_prefix):
+    """
+    Display raw stream recorded by `KinectRecorder`.
+
+    Parameter
+    ---------
+    load_prefix: Path to load data. Will load color stream from
+    `load_prefix`_color.avi, depth stream from `load_prefix`_depth.pkl, and body
+    stream from `load_prefix`_body.pkl.
+
+    """
     self.color_path = load_prefix + '_color.avi'
     self.color_src = cv2.VideoCapture(self.color_path)
     self.color_height = int(self.color_src.get(cv2.CAP_PROP_FRAME_HEIGHT))
@@ -51,7 +61,7 @@ class RawVisualizer:
     )
     self.done = False
     self.clock = pygame.time.Clock()
-    pygame.display.set_caption('Kinect Human Recorder')
+    pygame.display.set_caption('Playing')
 
     self.frame = np.ones([
       self.surface.get_height(),
@@ -71,7 +81,12 @@ class RawVisualizer:
               24
           )
         elif event.type == pygame.KEYDOWN:
-          self.playing = not self.playing
+          if self.playing:
+            self.playing = False
+            pygame.display.set_caption('Paused')
+          else:
+            self.playing = True
+            pygame.display.set_caption('Playing')
 
       if self.playing:
         ret, color = self.color_src.read()
@@ -81,6 +96,9 @@ class RawVisualizer:
 
         if self.frame_idx == len(self.depth_frames):
           self.frame_idx = 0
+          cv2.cvSetCaptureProperty(
+            self.color_src, cv2.CAP_PROP_POS_AVI_RATIO, 0
+          )
 
         self.frame[:, :self.color_width] = np.flip(
           color, axis=-1
