@@ -22,6 +22,25 @@ default_params = {
 
 
 def depth_to_world(depth, params, h_coord, v_coord):
+  """
+  Turn depth data into world coordinate.
+
+  Parameters
+  ----------
+  depth: Depth image of shape [height, width]
+
+  params: Camaera intrinsics.
+
+  h_coord: Horizontal coordinate in image coordinate system.
+
+  v_coord: Vertical coordinate in iamge coordinate system.
+
+  Return
+  ------
+  A numpy ndarray of shape [height, width, 3] as x, y, z coodinate of each
+  pixel.
+
+  """
   z = depth + params['trans_z']
   x = h_coord * z / params['fx_d'] + params['trans_x']
   y = v_coord * z / params['fy_d'] + params['trans_y']
@@ -29,6 +48,30 @@ def depth_to_world(depth, params, h_coord, v_coord):
 
 
 def linear_interpolation(indices, limit):
+  """
+  Linearly interpolate non-integeral indices.
+
+  Parameters
+  ----------
+  indices: Non-integeral indices. An 1D vector.
+
+  limit: Limitation of the index.
+
+  Return
+  ------
+  A tuple of (floor, weight_f, ceiling, weight_c, invalid).
+
+  floor: Floors of given indices.
+
+  weight_f: Weights of values at floor indices.
+
+  ceiling: Ceilings of given indices.
+
+  weight_c: Weights of values at ceiling indices.
+
+  invalid: Invalid indices.
+
+  """
   floor = np.floor(indices).astype(np.int16)
   ceiling = np.ceil(indices).astype(np.int16)
 
@@ -56,6 +99,18 @@ def linear_interpolation(indices, limit):
 
 
 def world_to_color(params, pcloud, color):
+  """
+  Encolor point cloud.
+
+  Parameter
+  ---------
+  params: Camera intrinsics.
+
+  pcloud: Point cloud of shape [height, width, 3].
+
+  color: Color image.
+
+  """
   x, y, z = pcloud[..., 0], pcloud[..., 1], pcloud[..., 2]
   x = x * params['fx_rgb'] / z + params['cx_rgb']
   y = y * params['fy_rgb'] / z + params['cy_rgb']
@@ -71,6 +126,20 @@ def world_to_color(params, pcloud, color):
 
 
 def calibrate(params, load_prefix, save_path):
+  """
+  Calibrate depth and color images. Save everything into a single pickle object.
+
+  Parameters
+  ----------
+  params: Camera intrinsics.
+
+  load_prefix: Path to load data. Will load color stream from
+  `load_prefix`_color.avi, depth stream from `load_prefix`_depth.pkl, and body
+  stream from `load_prefix`_body.pkl.
+
+  save_path: Path to save result data.
+
+  """
   color_src = cv2.VideoCapture(load_prefix + '_color.avi')
   depth_src = pickle_load(load_prefix + '_depth.pkl')
   body_src = pickle_load(load_prefix + '_body.pkl')

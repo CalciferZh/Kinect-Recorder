@@ -70,6 +70,10 @@ class RawVisualizer:
     ])
 
   def run(self):
+    """
+    Main loop.
+
+    """
     while not self.done:
       for event in pygame.event.get():
         if event.type == pygame.QUIT:
@@ -129,6 +133,14 @@ class RawVisualizer:
 
 class CalibratedVisualizer:
   def __init__(self, load_path):
+    """
+    Visualize stream after calibration.
+
+    Parameter
+    ---------
+    load_path: Path to load data.
+
+    """
     data = pickle_load(load_path)
     self.color_frames = data['colors']
     self.depth_frames = data['depths']
@@ -147,15 +159,6 @@ class CalibratedVisualizer:
     )
     self.hw_ratio = self.surface.get_height() / self.surface.get_width()
 
-    # screen layout: # is color stream, * is depth, & is body index
-    #  ----------------------
-    # |################# *****|
-    # |################# *****|
-    # |################# *****|
-    # |################# &&&&&|
-    # |################# &&&&&|
-    # |################# &&&&&|
-    #  ----------------------
     scale = 0.6
     self.screen = pygame.display.set_mode(
       (
@@ -176,6 +179,10 @@ class CalibratedVisualizer:
     ])
 
   def run(self):
+    """
+    Main loop.
+
+    """
     while not self.done:
       for event in pygame.event.get():
         if event.type == pygame.QUIT:
