@@ -12,7 +12,7 @@ class KinectRecorder:
   def __init__(self, save_prefix, visualize, save_on_record):
     """
     Record color, depth and body index stream from Kinect v2. The performance
-    is bad.
+    is bad. Press any key to start recording.
 
     On my PC:
     * If you want to display the stream, the application will run at 4 fps.

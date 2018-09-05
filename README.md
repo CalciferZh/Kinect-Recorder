@@ -2,7 +2,7 @@
 
 ## Overview
 
-This repo is an easy-to-use tool to record short color + depth + body index stream from Microsoft Kinect 2.
+This repo is an easy-to-use tool to record color + depth + body index stream from Microsoft Kinect 2.
 
 ## Usage
 
@@ -10,13 +10,13 @@ This repo is an easy-to-use tool to record short color + depth + body index stre
 
 Run `recorder.py` to run demo.
 
-Class `KinectRecorder` is responsible for recording raw stream. Due to Python's low performance (and my bad coding skill), the recorder can:
+Class `KinectRecorder` is used for recording raw stream. Due to Python's low performance (and my bad coding skill), the recorder can:
 
 * Display color, depth and body index stream at 4 fps.
 * Write color stream to video file at 10 ~ 30 fps while recording.
-* Write all color frames to video together after recording at 30 fps. However, to store the color frames. It requires 14GB RAM per minute.
+* Write all color frames to video together after recording at 30 fps. However, to store the color frames. It requires around 14GB RAM per minute.
 
-I recommend first setting everything up under with `visualize=True`, then set `visualize=False` to begin real recording. If you have plenty of RAM, set `save_on_record=False` to obtain stable 30 fps video, otherwise set it to `False`.
+I recommend first setting everything up with `visualize=True`, then set `visualize=False` to begin real recording. If you have plenty of RAM, set `save_on_record=False` to obtain stable 30 fps video, otherwise set it to `False`.
 
 ### Depth-color Alignment
 
