@@ -8,7 +8,7 @@ This repo is an easy-to-use tool to record color + depth + body index stream fro
 
 ### Record
 
-Run `recorder.py` to run demo.
+Run `python recorder.py` to run demo.
 
 Class `KinectRecorder` is used for recording raw stream. Due to Python's low performance (and my bad coding skill), the recorder can:
 
@@ -20,7 +20,7 @@ I recommend first setting everything up with `visualize=True`, then set `visuali
 
 ### Depth-color Alignment
 
-Run `alignment.py` to run demo.
+Run `python alignment.py` to run demo.
 
 Method `align` is used to align color stream to depth stream, which means assigning color to every pixel in the depth image. Camera intrinsics are required. We provide a default intrinsics setting, but intrinsics of depth camera may vary greatly across sensors, while color cameras' intrinsics are always the same. The intrinsics of depth camera can be read from C++ SDK of Kinect, or calibrated manually.
 
