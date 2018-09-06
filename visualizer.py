@@ -100,9 +100,7 @@ class RawVisualizer:
 
         if self.frame_idx == len(self.depth_frames):
           self.frame_idx = 0
-          cv2.cvSetCaptureProperty(
-            self.color_src, cv2.CAP_PROP_POS_AVI_RATIO, 0
-          )
+          self.color_src.set(cv2.CAP_PROP_POS_FRAMES, 1)
 
         self.frame[:, :self.color_width] = np.flip(
           color, axis=-1
@@ -209,9 +207,6 @@ class AlignedVisualizer:
 
         if self.frame_idx == len(self.depth_frames):
           self.frame_idx = 0
-          cv2.SetCaptureProperty(
-            self.color_src, cv2.CAP_PROP_POS_AVI_RATIO, 0
-          )
 
         self.frame[:, :self.width] = np.flip(
           color, axis=-1
@@ -241,5 +236,5 @@ class AlignedVisualizer:
 
 if __name__ == '__main__':
   # v = RawVisualizer('test')
-  v = AlignedVisualizer('test.pkl')
+  v = AlignedVisualizer('./data/yellow_top.pkl')
   v.run()

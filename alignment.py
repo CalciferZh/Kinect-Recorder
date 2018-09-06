@@ -7,10 +7,10 @@ from utils import pickle_save
 
 
 default_params = {
-  "cx_d": 256.684,
-  "cy_d": 207.085,
-  "fx_d": 366.193,
-  "fy_d": 366.193,
+  "fx_d": 366.696,
+  "fy_d": 366.696,
+  "cx_d": 251.72,
+  "cy_d": 206.95,
   "cx_rgb": 959.5,
   "cy_rgb": 539.5,
   "fx_rgb": 1081.37,
