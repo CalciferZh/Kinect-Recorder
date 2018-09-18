@@ -2,6 +2,8 @@
 
 ## Overview
 
+This is a work-in-progress repo.
+
 This repo is an easy-to-use tool to record color + depth + body index stream from Microsoft Kinect 2.
 
 ## Usage
