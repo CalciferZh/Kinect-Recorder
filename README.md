@@ -2,33 +2,32 @@
 
 ## Overview
 
-This is a work-in-progress repo.
-
-This repo is an easy-to-use tool to record color + depth + body index stream from Microsoft Kinect 2.
+This repo is an easy-to-use off-the-shell tool to record color + depth + body index stream from Microsoft Kinect 2.
 
 ## Usage
 
 ### Record
 
-Run `python recorder.py` to run demo.
+Run `python recorder.py`, and you will be required to enter several options. After that, you will see a window displaying color, depth and body index stream from Kinect. Press any key to start recording. During recording, the display window will be frozen (not updated) to ensure the speed of recording. To stop recording, just close the window. It will take some time to save the data.
 
-Class `KinectRecorder` is used for recording raw stream. Due to Python's low performance (and my bad coding skill), the recorder can:
+The recorder takes around 14GB RAM per minute. You need to monitor your RAM usage and stop recording before your RAM being used up.
 
-* Display color, depth and body index stream at 4 fps.
+Class `KinectRecorder` is used for recording. Due to Python's low performance (and my bad coding skill), the recorder can:
+
 * Write color stream to video file at 10 ~ 30 fps while recording.
-* Write all color frames to video together after recording at 30 fps. However, to store the color frames. It requires around 14GB RAM per minute.
+* Cache all color frames and write them to video together after recording at 30 fps. It requires around 14GB RAM per minute.
 
-I recommend first setting everything up with `visualize=True`, then set `visualize=False` to begin real recording. If you have plenty of RAM, set `save_on_record=False` to obtain stable 30 fps video, otherwise set it to `False`.
+If you want a stable frame rate, don't save-on-record; on the other hand, if you want to record for a long time (longer than your RAM can bear), please turn on save-on-record.
 
 ### Depth-color Alignment
 
-Run `python alignment.py` to run demo.
+See `alignment.py`.
 
-Method `align` is used to align color stream to depth stream, which means assigning color to every pixel in the depth image. Camera intrinsics are required. We provide a default intrinsics setting, but intrinsics of depth camera may vary greatly across sensors, while color cameras' intrinsics are always the same. The intrinsics of depth camera can be read from C++ SDK of Kinect, or calibrated manually.
+Method `align` is used to align color stream to depth stream, which means assigning color to every pixel in the depth image. Camera intrinsic parameters are required. We provide a default intrinsic parameters setting, but for depth camera they may vary greatly across sensors, while for color cameras they are always the same. The intrinsic parameters of depth camera can be read from C++ SDK of Kinect, or calibrated manually.
 
 ### Visualization
 
-To visualize the results, please refer to `visualizer.py`. `RawVisualizer` is used to visualize raw captured data, and `AlignedVisualizer` is used to visualize result after alignment.
+To visualize the results, please refer to `visualizer.py`. `RawVisualizer` is used to visualize raw captured data, and `AlignedVisualizer` is used to visualize the result after alignment.
 
 ## Dependencies
 
