@@ -29,11 +29,11 @@ def depth_to_world(depth, params, h_coord, v_coord):
   ----------
   depth: Depth image of shape [height, width]
 
-  params: Camaera intrinsics.
+  params: Camera intrinsic parameters.
 
   h_coord: Horizontal coordinate in image coordinate system.
 
-  v_coord: Vertical coordinate in iamge coordinate system.
+  v_coord: Vertical coordinate in image coordinate system.
 
   Return
   ------
@@ -49,11 +49,11 @@ def depth_to_world(depth, params, h_coord, v_coord):
 
 def linear_interpolation(indices, limit):
   """
-  Linearly interpolate non-integeral indices.
+  Linearly interpolate non-integral indices.
 
   Parameters
   ----------
-  indices: Non-integeral indices. An 1D vector.
+  indices: Non-integral indices. An 1D vector.
 
   limit: Limitation of the index.
 
@@ -104,7 +104,7 @@ def world_to_color(params, pcloud, color):
 
   Parameter
   ---------
-  params: Camera intrinsics.
+  params: Camera intrinsic paramters.
 
   pcloud: Point cloud of shape [height, width, 3].
 
@@ -131,7 +131,7 @@ def align(params, load_prefix, save_path):
 
   Parameters
   ----------
-  params: Camera intrinsics.
+  params: Camera intrinsic parameters.
 
   load_prefix: Path to load data. Will load color stream from
   `load_prefix`_color.avi, depth stream from `load_prefix`_depth.pkl, and body

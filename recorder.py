@@ -1,15 +1,16 @@
 import numpy as np
-from pykinect2 import PyKinectRuntime
-from pykinect2 import PyKinectV2
 import pygame
 import cv2
+import time
+from pykinect2 import PyKinectRuntime
+from pykinect2 import PyKinectV2
 
 from utils import pickle_load
 from utils import pickle_save
 
 
 class KinectRecorder:
-  def __init__(self, save_prefix, visualize, save_on_record):
+  def __init__(self, save_prefix, save_on_record):
     """
     Record color, depth and body index stream from Kinect v2. The performance
     is bad. Press any key to start recording.
@@ -20,12 +21,12 @@ class KinectRecorder:
     will run at 10 ~ 30 fps.
     * If you want to write all color frames to video file together after
     recording, it can run at 30 fps - perfect. However, it will eat 14GB RAM per
-    minute.
+    minute. You need to monitor your RAM usage and stop recording before your
+    RAM being used up.
 
-    I recommend first setting everything up under with `visualize=True`, then
-    set `visualize=False` to begin real recording. If you have plenty of RAM,
-    set `save_on_record=False` to obtain stable fps, otherwise set it to
-    `False`.
+    When start recording, the screen will not be updated to ensure recording
+    speed. To stop recording, just close the window. It will take some time to
+    save the data.
 
     Parameters
     ----------
@@ -33,8 +34,6 @@ class KinectRecorder:
     `save_prefix`_color.avi, depth stream will be saved to
     `save_prefix`_depth.pkl as a list of ndarrays, body index will be saved to
     `save_prefix`_body.pkl also as a list of ndarrays.
-
-    visualize: Whether to display the color, depth and body stream.
 
     save_on_record: Whether to save color stream to video file while recording.
 
@@ -57,7 +56,6 @@ class KinectRecorder:
     self.body_frames = []
     self.fps = 30
     self.recording = False
-    self.visualize = visualize
     self.save_prefix = save_prefix
     self.save_on_record = save_on_record
     self.min_fps = 30
@@ -152,8 +150,7 @@ class KinectRecorder:
           self.color_out.write(self.color)
         else:
           self.color_frames.append(self.color)
-
-      if self.visualize:
+      else:
         self.frame[:, :self.color_width] = np.flip(
           self.color, axis=-1
         ).astype(np.uint8)
@@ -201,5 +198,19 @@ class KinectRecorder:
 
 
 if __name__ == '__main__':
-  kr = KinectRecorder('test', False, False)
+  save_prefix = input('Please enter save file name (timestamp by default): ')
+  if save_prefix == '':
+    save_prefix = str(time.time()).replace('.', '_')
+
+  save_on_record = None
+  while True:
+    save_on_record = input('Do you want to save on record? ("yes" or "no", "no" by default): ')
+    if save_on_record == 'yes':
+      save_on_record = True
+      break
+    elif save_on_record == 'no' or save_on_record == '':
+      save_on_record = False
+      break
+
+  kr = KinectRecorder(save_prefix, save_on_record)
   kr.run()
